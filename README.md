@@ -5,7 +5,7 @@ del robot bípedo Unitree G1. El robot hace una sentadilla, vuelve a levantarse,
 saluda dos veces con el brazo derecho y regresa a la postura inicial.
 
 <p align="center">
-  <img src="docs/img/g1_saludo.jpg" alt="Unitree G1 saludando con la mano derecha en MuJoCo" width="300">
+  <img src="docs/img/g1_rutina.gif" alt="Animación del Unitree G1 haciendo la rutina en MuJoCo" width="240">
 </p>
 
 Está preparado para Windows y para una persona que recién recibe el proyecto.
