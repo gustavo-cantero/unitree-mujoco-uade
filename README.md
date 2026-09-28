@@ -79,6 +79,7 @@ UADE-Mujoco/
 │   ├── reporting.py          exportación del CSV
 │   └── paths.py              rutas centralizadas
 ├── tests/                    pruebas automáticas
+├── pruebas/                  un .bat por cada prueba en simulador y robot
 ├── docs/                     documentación paso a paso e imágenes
 ├── models/g1/                modelo oficial y mallas del G1
 ├── resultados/               archivos producidos al ejecutar
@@ -134,7 +135,8 @@ con el SDK de Unitree. Con él, `unitree.bat` ofrece un simulador que se
 comunica por DDS igual que el G1 real y los comandos para enviarle la rutina:
 el saludo por `arm_sdk` y la sentadilla con el controlador de Unitree. El paso
 a paso, con las precauciones de seguridad, está en
-[Del simulador al robot físico](docs/ROBOT_FISICO.md).
+[Del simulador al robot físico](docs/ROBOT_FISICO.md), y cada prueba tiene
+su `.bat` en [pruebas](pruebas/README.md).
 
 ## Modelo y licencia
 

@@ -39,6 +39,8 @@ Robot/DDS side (needs `.venv-robot`, Python 3.10, created by `instalar_robot.bat
 .\unitree.bat saludo [--robot --interfaz "Ethernet 2"]
 ```
 
+`pruebas/NN_*.bat` wrap each scenario for double-click use (documented in `pruebas/README.md`). Sim ones `start` the simulator in a new window via `cmd /c .\unitree.bat simulador ... --duracion N` (keep the `.\` prefix: some environments don't search the cwd) and then run the controller; the simulator refuses to start if another one already publishes `rt/lowstate`. Robot ones take the adapter name as `%1` or prompt for it. All `.bat` files must stay CRLF.
+
 ## Architecture
 
 Linear pipeline driven by `cli.py`: `config.build_sequence()` → `model.load_model()` + `model.validate_project()` → `runner.run_headless|run_visual` → `reporting.write_csv()`.

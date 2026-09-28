@@ -114,7 +114,7 @@ class LowStateReader:
         with self._lock:
             self._msg = msg
 
-    def wait_first(self, timeout: float = 5.0) -> None:
+    def wait_first(self, timeout: float = 10.0) -> None:
         deadline = time.perf_counter() + timeout
         while self.latest() is None:
             if time.perf_counter() > deadline:
@@ -141,6 +141,27 @@ class LowStateReader:
 
     def mode_machine(self) -> int:
         return int(self.latest().mode_machine)
+
+    def close(self) -> None:
+        self._subscriber.Close()
+
+
+def ensure_no_other_publisher(seconds: float = 1.0) -> None:
+    """Falla si alguien ya publica rt/lowstate en este dominio.
+
+    Dos simuladores a la vez mezclarían sus estados y los comandos llegarían
+    a ambos.
+    """
+
+    reader = LowStateReader()
+    time.sleep(seconds)
+    busy = reader.latest() is not None
+    reader.close()
+    if busy:
+        raise RuntimeError(
+            "Ya hay otro simulador (o un robot) publicando rt/lowstate en este "
+            "dominio. Cerralo antes de abrir uno nuevo."
+        )
 
 
 class LowCmdWriter:
@@ -197,6 +218,9 @@ def confirm_robot(description: str) -> None:
     print("Verificá que no haya personas ni obstáculos cerca y tené a mano el")
     print("control remoto para pasar a modo amortiguado (damping).")
     print("=" * 70)
-    answer = input("Escribí SI para continuar: ").strip()
+    try:
+        answer = input("Escribí SI para continuar: ").strip()
+    except EOFError:
+        answer = ""
     if answer != "SI":
         raise RuntimeError("Operación cancelada por el usuario.")

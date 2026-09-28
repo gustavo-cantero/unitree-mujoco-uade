@@ -23,7 +23,8 @@ Windows solo se instala con **Python 3.10**. Por eso se usa un segundo entorno,
    lo descarga con [uv](https://docs.astral.sh/uv/).
 
 Todos los comandos se ejecutan con `unitree.bat <comando>`. Sin argumentos
-muestra la ayuda.
+muestra la ayuda. La carpeta [pruebas](../pruebas/README.md) tiene un `.bat`
+por cada prueba, que se ejecuta con doble clic.
 
 ## Etapa 1: física en MuJoCo
 

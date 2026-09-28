@@ -14,7 +14,13 @@ from __future__ import annotations
 
 import argparse
 
-from .dds import ROBOT_DOMAIN, SIM_DOMAIN, confirm_robot, init_dds
+from .dds import (
+    ROBOT_DOMAIN,
+    SIM_DOMAIN,
+    confirm_robot,
+    ensure_no_other_publisher,
+    init_dds,
+)
 
 
 def _add_target(parser: argparse.ArgumentParser, robot_only: bool = False) -> None:
@@ -74,6 +80,8 @@ def parse_args() -> argparse.Namespace:
 
 def _run() -> int:
     args = parse_args()
+    if args.interfaz is not None:
+        args.interfaz = args.interfaz.strip() or None
     real_robot = args.comando in ("sentadilla", "rutina") or getattr(args, "robot", False)
     if real_robot and not args.interfaz:
         raise ValueError("Con --robot hay que indicar --interfaz.")
@@ -83,6 +91,7 @@ def _run() -> int:
 
         simulator = G1Simulator(harness=args.arnes)
         init_dds(SIM_DOMAIN, args.interfaz)
+        ensure_no_other_publisher()
         simulator.run(show_window=not args.sin_ventana, duration=args.duracion)
         return 0
 
