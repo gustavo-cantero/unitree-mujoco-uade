@@ -4,6 +4,10 @@ Proyecto universitario completo y autónomo para mostrar una rutina sencilla
 del robot bípedo Unitree G1. El robot hace una sentadilla, vuelve a levantarse,
 saluda dos veces con el brazo derecho y regresa a la postura inicial.
 
+<p align="center">
+  <img src="docs/img/g1_saludo.jpg" alt="Unitree G1 saludando con la mano derecha en MuJoCo" width="300">
+</p>
+
 Está preparado para Windows y para una persona que recién recibe el proyecto.
 No requiere el SDK de Unitree, CycloneDDS ni una conexión de red: solamente
 Python, NumPy y MuJoCo.
@@ -70,7 +74,7 @@ UADE-Mujoco/
 │   ├── reporting.py          exportación del CSV
 │   └── paths.py              rutas centralizadas
 ├── tests/                    pruebas automáticas
-├── docs/                     documentación paso a paso
+├── docs/                     documentación paso a paso e imágenes
 ├── models/g1/                modelo oficial y mallas del G1
 ├── resultados/               archivos producidos al ejecutar
 ├── pyproject.toml            metadatos y dependencias
