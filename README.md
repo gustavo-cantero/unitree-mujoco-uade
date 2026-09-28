@@ -9,8 +9,9 @@ saluda dos veces con el brazo derecho y regresa a la postura inicial.
 </p>
 
 Está preparado para Windows y para una persona que recién recibe el proyecto.
-No requiere el SDK de Unitree, CycloneDDS ni una conexión de red: solamente
-Python, NumPy y MuJoCo.
+La demo principal no requiere el SDK de Unitree, CycloneDDS ni una conexión de
+red: solamente Python, NumPy y MuJoCo (el SDK solo hace falta para
+[llevarlo al robot](#llevarlo-al-robot)).
 
 ## La forma más fácil de empezar
 
@@ -50,6 +51,11 @@ reinstalarlo después de cada modificación.
 # Repetir la rutina tres veces
 .\.venv\Scripts\python.exe -m uade_mujoco --repetir 3
 
+# Cambiar los fotogramas por segundo, la escena MJCF o el archivo CSV de salida
+.\.venv\Scripts\python.exe -m uade_mujoco --fps 30
+.\.venv\Scripts\python.exe -m uade_mujoco --modelo models\g1\scene_29dof.xml
+.\.venv\Scripts\python.exe -m uade_mujoco --headless --salida resultados\otra.csv
+
 # Ejecutar las pruebas automáticas
 .\.venv\Scripts\python.exe -m unittest discover -s tests -v
 ```
@@ -67,7 +73,7 @@ Después de ejecutar la rutina se crea
 ## Cómo está organizado
 
 ```text
-UADE-Mujoco/
+unitree-mujoco-uade/
 ├── src/uade_mujoco/          código principal del proyecto
 │   ├── cli.py                argumentos y coordinación general
 │   ├── config.py             posturas y tiempos que el alumno puede cambiar
@@ -84,6 +90,8 @@ UADE-Mujoco/
 ├── models/g1/                modelo oficial y mallas del G1
 ├── resultados/               archivos producidos al ejecutar
 ├── pyproject.toml            metadatos y dependencias
+├── requirements.txt          instala el proyecto con pip -r
+├── demo_g1.py                ejecuta la demo con python demo_g1.py
 ├── instalar.bat              crea el entorno e instala dependencias
 ├── verificar.bat             corre validaciones y pruebas
 ├── iniciar_demo.bat          abre la demostración
@@ -109,8 +117,9 @@ s(u) = 10u³ - 15u⁴ + 6u⁵,   con 0 <= u <= 1
 ```
 
 Esto evita arrancar o frenar de golpe. Antes de mostrar la rutina, el programa
-comprueba que el modelo tenga 29 actuadores, que existan las articulaciones y
-que todos los valores estén dentro de sus límites MJCF.
+comprueba que el modelo tenga 29 actuadores, que existan las articulaciones,
+que todos los valores estén dentro de sus límites MJCF, que cada fase dure un
+tiempo positivo y que la base del robot no baje de 0,45 m.
 
 ## Alcance y limitación
 
