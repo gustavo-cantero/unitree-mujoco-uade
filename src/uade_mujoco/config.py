@@ -52,8 +52,18 @@ def initial_pose() -> Pose:
     return pose_with()
 
 
-def build_sequence() -> list[Stage]:
-    """Construye la rutina completa de unos nueve segundos."""
+RIGHT_ARM_JOINTS = (
+    "right_shoulder_pitch_joint",
+    "right_shoulder_roll_joint",
+    "right_shoulder_yaw_joint",
+    "right_elbow_joint",
+    "right_wrist_pitch_joint",
+    "right_wrist_yaw_joint",
+)
+
+
+def squat_stages() -> list[Stage]:
+    """Fases de la sentadilla, desde y hacia la postura neutra."""
 
     squat = pose_with(
         {
@@ -65,6 +75,19 @@ def build_sequence() -> list[Stage]:
             "right_ankle_pitch_joint": -0.50,
         }
     )
+    return [
+        Stage("Sentadilla: bajando", 1.60, squat),
+        Stage("Sentadilla: sosteniendo", 0.70, squat),
+        Stage("Sentadilla: subiendo", 1.60, pose_with()),
+    ]
+
+
+def wave_stages() -> list[Stage]:
+    """Fases del saludo: levantar el brazo y balancear la mano dos veces.
+
+    Termina con el brazo levantado; quien la usa agrega la vuelta al reposo.
+    Solo cambia las articulaciones de RIGHT_ARM_JOINTS.
+    """
 
     # Brazo al costado (15° sobre la horizontal), antebrazo vertical y palma
     # mirando hacia adelante.
@@ -94,17 +117,22 @@ def build_sequence() -> list[Stage]:
             "right_wrist_pitch_joint": 0.35,
         }
     )
-
     return [
-        Stage("Postura inicial", 1.00, pose_with()),
-        Stage("Sentadilla: bajando", 1.60, squat),
-        Stage("Sentadilla: sosteniendo", 0.70, squat),
-        Stage("Sentadilla: subiendo", 1.60, pose_with()),
         Stage("Saludo: levantando el brazo", 0.90, arm_up),
         Stage("Saludo: izquierda", 0.35, wave_left),
         Stage("Saludo: derecha", 0.35, wave_right),
         Stage("Saludo: izquierda", 0.35, wave_left),
         Stage("Saludo: derecha", 0.35, wave_right),
+    ]
+
+
+def build_sequence() -> list[Stage]:
+    """Construye la rutina completa de unos nueve segundos."""
+
+    return [
+        Stage("Postura inicial", 1.00, pose_with()),
+        *squat_stages(),
+        *wave_stages(),
         Stage("Volviendo a postura neutra", 0.90, pose_with()),
         Stage("Fin", 0.60, pose_with()),
     ]

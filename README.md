@@ -75,6 +75,7 @@ UADE-Mujoco/
 │   ├── model.py              carga y validación de MuJoCo
 │   ├── runner.py             ejecución visual y sin ventana
 │   ├── physics.py            modo con gravedad y control PD
+│   ├── unitree/              simulador DDS y comandos para el robot real
 │   ├── reporting.py          exportación del CSV
 │   └── paths.py              rutas centralizadas
 ├── tests/                    pruebas automáticas
@@ -84,7 +85,9 @@ UADE-Mujoco/
 ├── pyproject.toml            metadatos y dependencias
 ├── instalar.bat              crea el entorno e instala dependencias
 ├── verificar.bat             corre validaciones y pruebas
-└── iniciar_demo.bat          abre la demostración
+├── iniciar_demo.bat          abre la demostración
+├── instalar_robot.bat        crea .venv-robot con el SDK de Unitree
+└── unitree.bat               simulador DDS y comandos para el robot
 ```
 
 Documentación recomendada:
@@ -93,6 +96,7 @@ Documentación recomendada:
 - [Arquitectura del proyecto](docs/ARQUITECTURA.md)
 - [Cómo modificar los movimientos](docs/CAMBIAR_MOVIMIENTOS.md)
 - [Guía para la presentación](docs/GUIA_PRESENTACION.md)
+- [Del simulador al robot físico](docs/ROBOT_FISICO.md)
 
 ## Idea técnica
 
@@ -122,6 +126,15 @@ para enviar comandos a un robot físico.
 
 Como ampliación futura se puede implementar un controlador de equilibrio que
 permita usar rigideces realistas.
+
+## Llevarlo al robot
+
+`instalar_robot.bat` crea un segundo entorno (`.venv-robot`, con Python 3.10)
+con el SDK de Unitree. Con él, `unitree.bat` ofrece un simulador que se
+comunica por DDS igual que el G1 real y los comandos para enviarle la rutina:
+el saludo por `arm_sdk` y la sentadilla con el controlador de Unitree. El paso
+a paso, con las precauciones de seguridad, está en
+[Del simulador al robot físico](docs/ROBOT_FISICO.md).
 
 ## Modelo y licencia
 

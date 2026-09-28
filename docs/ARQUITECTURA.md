@@ -46,6 +46,18 @@ motor y deja que MuJoCo integre la dinámica. Las ganancias están al comienzo d
 archivo: con rigideces bajas en las piernas el robot se cae en la sentadilla,
 porque no hay un controlador de equilibrio.
 
+### `unitree/`
+
+Se usa solo desde `.venv-robot`, porque necesita el SDK de Unitree. Reutiliza
+`config.py` y `trajectory.py`, pero en lugar de escribir en MuJoCo envía
+mensajes DDS (`LowCmd_`) al G1:
+
+- `g1.py`: orden de los 29 motores del SDK y rigideces del ejemplo oficial.
+- `dds.py`: conexión DDS, lectura de `rt/lowstate` y envío de comandos.
+- `simulator.py`: G1 simulado que responde por DDS como el robot real.
+- `low_level.py`, `arm_wave.py`, `loco.py`: rutina completa, saludo y
+  sentadilla. Ver [Del simulador al robot físico](ROBOT_FISICO.md).
+
 ### `reporting.py`
 
 Convierte las muestras ejecutadas en filas de CSV. Está separado para que una

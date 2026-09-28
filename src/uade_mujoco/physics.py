@@ -36,7 +36,7 @@ def enable_gravity(model: mujoco.MjModel) -> None:
     model.opt.gravity[:] = (0.0, 0.0, -GRAVITY_M_S2)
 
 
-def _gains_for(joint_name: str) -> tuple[float, float]:
+def gains_for(joint_name: str) -> tuple[float, float]:
     if "wrist" in joint_name:
         return WRIST_GAINS
     if any(part in joint_name for part in ("shoulder", "elbow")):
@@ -61,7 +61,7 @@ class PdController:
         self.names = [model.joint(j).name for j in joint_ids]
         self.qpos_adr = np.array([model.jnt_qposadr[j] for j in joint_ids])
         self.qvel_adr = np.array([model.jnt_dofadr[j] for j in joint_ids])
-        gains = np.array([_gains_for(name) for name in self.names])
+        gains = np.array([gains_for(name) for name in self.names])
         self.kp, self.kd = gains[:, 0], gains[:, 1]
         self.low, self.high = model.actuator_ctrlrange.T
         self.substeps = max(1, round(1.0 / (fps * model.opt.timestep)))
