@@ -44,6 +44,9 @@ reinstalarlo después de cada modificación.
 # Abrir la demostración visual
 .\.venv\Scripts\python.exe -m uade_mujoco
 
+# Misma rutina con gravedad: los motores se mueven con un control PD de torque
+.\.venv\Scripts\python.exe -m uade_mujoco --fisica
+
 # Repetir la rutina tres veces
 .\.venv\Scripts\python.exe -m uade_mujoco --repetir 3
 
@@ -71,6 +74,7 @@ UADE-Mujoco/
 │   ├── trajectory.py         interpolación de mínimo tirón
 │   ├── model.py              carga y validación de MuJoCo
 │   ├── runner.py             ejecución visual y sin ventana
+│   ├── physics.py            modo con gravedad y control PD
 │   ├── reporting.py          exportación del CSV
 │   └── paths.py              rutas centralizadas
 ├── tests/                    pruebas automáticas
@@ -105,13 +109,19 @@ que todos los valores estén dentro de sus límites MJCF.
 
 ## Alcance y limitación
 
-Esta es una **demostración cinemática educativa**. La gravedad se desactiva y
-la base se mantiene controlada para concentrar el trabajo en la generación de
-trayectorias. No es un controlador de equilibrio, no es sim-to-real y no debe
-usarse para enviar comandos a un robot físico.
+Por defecto es una **demostración cinemática educativa**: la gravedad se
+desactiva y cada postura se asigna directamente, con los pies apoyados en el
+suelo, para concentrar el trabajo en la generación de trayectorias.
 
-Como ampliación futura se puede implementar un controlador PD de torque, un
-soporte virtual y, finalmente, un controlador de equilibrio.
+Con `--fisica` la gravedad se activa y MuJoCo simula la dinámica: cada motor
+recibe un torque `tau = kp·(q_objetivo − q) − kd·dq`. El robot se sostiene
+porque la rutina mantiene el centro de masa sobre los pies y las rigideces son
+muy altas (ver `physics.py`); con valores parecidos a los del robot real se
+cae. No es un controlador de equilibrio, no es sim-to-real y no debe usarse
+para enviar comandos a un robot físico.
+
+Como ampliación futura se puede implementar un controlador de equilibrio que
+permita usar rigideces realistas.
 
 ## Modelo y licencia
 

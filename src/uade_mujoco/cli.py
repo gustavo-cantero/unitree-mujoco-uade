@@ -8,6 +8,7 @@ from pathlib import Path
 from .config import CSV_JOINTS, JOINT_NAMES, build_sequence, initial_pose
 from .model import load_model, validate_project
 from .paths import DEFAULT_CSV_PATH, DEFAULT_MODEL_PATH
+from .physics import PdController, enable_gravity
 from .reporting import write_csv
 from .runner import run_headless, run_visual
 from .trajectory import total_duration
@@ -26,6 +27,11 @@ def parse_args() -> argparse.Namespace:
         "--headless",
         action="store_true",
         help="ejecuta la rutina sin abrir la ventana de MuJoCo",
+    )
+    parser.add_argument(
+        "--fisica",
+        action="store_true",
+        help="activa la gravedad y mueve los motores con un control PD de torque",
     )
     parser.add_argument("--fps", type=int, default=60, help="fotogramas por segundo")
     parser.add_argument(
@@ -59,6 +65,12 @@ def _run() -> int:
     if args.check:
         return 0
 
+    physics = None
+    if args.fisica:
+        enable_gravity(model)
+        physics = PdController(model, data, addresses, initial_pose(), args.fps)
+        print("[OK] Modo físico: gravedad activada y control PD de torque")
+
     common = (
         model,
         data,
@@ -69,6 +81,7 @@ def _run() -> int:
         CSV_JOINTS,
         args.fps,
         args.repetir,
+        physics,
     )
     rows = run_headless(*common) if args.headless else run_visual(*common)
     if rows:

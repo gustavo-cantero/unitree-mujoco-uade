@@ -8,8 +8,22 @@ from typing import Iterable, Mapping
 import mujoco
 
 from .model import apply_frame
+from .physics import PdController
 from .reporting import csv_row
-from .trajectory import Pose, Stage, iter_frames, total_duration
+from .trajectory import Frame, Pose, Stage, iter_frames, total_duration
+
+
+def _advance(
+    model: mujoco.MjModel,
+    data: mujoco.MjData,
+    addresses: Mapping[str, int],
+    frame: Frame,
+    physics: PdController | None,
+) -> None:
+    if physics is None:
+        apply_frame(model, data, addresses, frame)
+    else:
+        physics.advance(frame)
 
 
 def run_headless(
@@ -22,6 +36,7 @@ def run_headless(
     csv_joints: Iterable[str],
     fps: int,
     repeats: int,
+    physics: PdController | None = None,
 ) -> list[dict[str, object]]:
     rows: list[dict[str, object]] = []
     duration = total_duration(sequence)
@@ -31,7 +46,7 @@ def run_headless(
             if frame.phase != last_phase:
                 print(f"[Ciclo {cycle}] {frame.phase}")
                 last_phase = frame.phase
-            apply_frame(model, data, addresses, frame)
+            _advance(model, data, addresses, frame, physics)
             rows.append(
                 csv_row(
                     cycle,
@@ -55,6 +70,7 @@ def run_visual(
     csv_joints: Iterable[str],
     fps: int,
     repeats: int,
+    physics: PdController | None = None,
 ) -> list[dict[str, object]]:
     import mujoco.viewer
 
@@ -77,7 +93,7 @@ def run_visual(
                 if frame.phase != last_phase:
                     print(f"[Ciclo {cycle}] {frame.phase}")
                     last_phase = frame.phase
-                apply_frame(model, data, addresses, frame)
+                _advance(model, data, addresses, frame, physics)
                 viewer.sync()
                 rows.append(
                     csv_row(

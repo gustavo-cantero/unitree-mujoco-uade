@@ -10,6 +10,7 @@ cli.py
   └─ runner.py ejecuta cada muestra
        ├─ trajectory.py interpola las posturas
        ├─ model.py aplica la muestra a MuJoCo
+       │  (o physics.py la persigue con torques si se usa --fisica)
        └─ reporting.py registra el CSV
 ```
 
@@ -36,6 +37,14 @@ la base para que los pies queden apoyados justo sobre el suelo.
 Tiene dos modos que consumen exactamente la misma trayectoria: visual y sin
 ventana. Esto permite verificar la lógica aunque una computadora no tenga un
 entorno gráfico disponible.
+
+### `physics.py`
+
+Modo opcional `--fisica`. Activa la gravedad y, en lugar de asignar cada
+postura, calcula en cada paso de simulación el torque de un control PD por
+motor y deja que MuJoCo integre la dinámica. Las ganancias están al comienzo del
+archivo: con rigideces bajas en las piernas el robot se cae en la sentadilla,
+porque no hay un controlador de equilibrio.
 
 ### `reporting.py`
 
