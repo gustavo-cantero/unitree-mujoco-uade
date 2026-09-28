@@ -41,15 +41,11 @@ CSV_JOINTS = (
 )
 
 
-def pose_with(
-    overrides: Mapping[str, float] | None = None,
-    *,
-    base_z_offset: float = 0.0,
-) -> Pose:
+def pose_with(overrides: Mapping[str, float] | None = None) -> Pose:
     joints = dict(NEUTRAL_JOINTS)
     if overrides:
         joints.update(overrides)
-    return Pose(joints=joints, base_z_offset=base_z_offset)
+    return Pose(joints=joints)
 
 
 def initial_pose() -> Pose:
@@ -67,8 +63,7 @@ def build_sequence() -> list[Stage]:
             "right_hip_pitch_joint": -0.55,
             "right_knee_joint": 1.05,
             "right_ankle_pitch_joint": -0.50,
-        },
-        base_z_offset=-0.18,
+        }
     )
 
     arm_up_values = {

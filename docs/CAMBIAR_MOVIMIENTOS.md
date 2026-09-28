@@ -9,10 +9,15 @@ src/uade_mujoco/config.py
 ## Cambiar la profundidad de la sentadilla
 
 Dentro de `build_sequence`, buscá la variable `squat`. Los valores principales
-son `left_knee_joint`, `right_knee_joint` y `base_z_offset`.
+son la cadera (`*_hip_pitch_joint`), la rodilla (`*_knee_joint`) y el tobillo
+(`*_ankle_pitch_joint`) de cada pierna.
 
 - Una rodilla más positiva se flexiona más.
-- Un `base_z_offset` más negativo baja el cuerpo.
+- La altura del cuerpo no se escribe a mano: el programa la calcula en cada
+  instante para que los pies queden apoyados en el suelo.
+- Para que la planta del pie quede horizontal, la suma
+  `hip_pitch + knee + ankle_pitch` debe dar `0`
+  (por ejemplo `-0.55 + 1.05 - 0.50 = 0`).
 - Las dos piernas deben conservar valores simétricos.
 
 ## Cambiar el saludo

@@ -28,7 +28,8 @@ interpolación de mínimo tirón. Se puede probar de manera aislada.
 ### `model.py`
 
 Es la frontera con MuJoCo. Carga el MJCF, busca direcciones articulares,
-comprueba límites y aplica cada postura.
+comprueba límites y aplica cada postura. Al aplicarla calcula la altura de
+la base para que los pies queden apoyados justo sobre el suelo.
 
 ### `runner.py`
 

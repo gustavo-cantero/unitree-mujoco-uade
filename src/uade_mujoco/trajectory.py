@@ -10,10 +10,13 @@ import numpy as np
 
 @dataclass(frozen=True)
 class Pose:
-    """Objetivos articulares y desplazamiento vertical de la base."""
+    """Objetivos articulares de una postura.
+
+    La altura de la base no se indica: model.py la calcula para que los pies
+    queden apoyados en el suelo.
+    """
 
     joints: Mapping[str, float]
-    base_z_offset: float = 0.0
 
 
 @dataclass(frozen=True)
@@ -53,10 +56,7 @@ def interpolate_pose(
         + (end.joints[name] - start.joints[name]) * blend
         for name in joint_names
     }
-    base_z_offset = start.base_z_offset + (
-        end.base_z_offset - start.base_z_offset
-    ) * blend
-    return Pose(joints=joints, base_z_offset=base_z_offset)
+    return Pose(joints=joints)
 
 
 def iter_frames(
