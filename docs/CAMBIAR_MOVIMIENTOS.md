@@ -22,8 +22,13 @@ son la cadera (`*_hip_pitch_joint`), la rodilla (`*_knee_joint`) y el tobillo
 
 ## Cambiar el saludo
 
-Buscá `arm_up_values`, `wave_left` y `wave_right`. La oscilación visible usa
-principalmente `right_wrist_yaw_joint` y `right_shoulder_yaw_joint`.
+Buscá `arm_up_values`, `wave_left` y `wave_right`. En `arm_up_values` el brazo
+queda al costado, con el antebrazo vertical y la palma hacia adelante.
+
+La oscilación usa `right_elbow_joint` y `right_wrist_pitch_joint`: en esa
+postura ambos giran alrededor del eje perpendicular a la palma, así que la mano
+se balancea de lado a lado. `right_wrist_yaw_joint` movería la mano hacia
+adelante y atrás, como un abanico, por eso no se usa para saludar.
 
 ## Cambiar la duración
 

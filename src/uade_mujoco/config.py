@@ -37,7 +37,7 @@ CSV_JOINTS = (
     "right_shoulder_pitch_joint",
     "right_shoulder_roll_joint",
     "right_elbow_joint",
-    "right_wrist_yaw_joint",
+    "right_wrist_pitch_joint",
 )
 
 
@@ -66,27 +66,32 @@ def build_sequence() -> list[Stage]:
         }
     )
 
+    # Brazo al costado (15° sobre la horizontal), antebrazo vertical y palma
+    # mirando hacia adelante.
     arm_up_values = {
-        "right_shoulder_pitch_joint": -0.20,
-        "right_shoulder_roll_joint": -1.80,
-        "right_shoulder_yaw_joint": 0.0,
-        "right_elbow_joint": 0.80,
-        "right_wrist_pitch_joint": 0.15,
-        "right_wrist_yaw_joint": 0.45,
+        "right_shoulder_pitch_joint": 0.0,
+        "right_shoulder_roll_joint": -1.71,
+        "right_shoulder_yaw_joint": -1.57,
+        "right_elbow_joint": 0.14,
+        "right_wrist_pitch_joint": 0.0,
+        "right_wrist_yaw_joint": 0.0,
     }
     arm_up = pose_with(arm_up_values)
+    # En esa postura el codo y right_wrist_pitch_joint giran alrededor del eje
+    # perpendicular a la palma: la mano se balancea de lado a lado sin dejar de
+    # mirar hacia adelante.
     wave_left = pose_with(
         arm_up_values
         | {
-            "right_shoulder_yaw_joint": -0.20,
-            "right_wrist_yaw_joint": -0.65,
+            "right_elbow_joint": -0.11,
+            "right_wrist_pitch_joint": -0.35,
         }
     )
     wave_right = pose_with(
         arm_up_values
         | {
-            "right_shoulder_yaw_joint": 0.20,
-            "right_wrist_yaw_joint": 0.65,
+            "right_elbow_joint": 0.39,
+            "right_wrist_pitch_joint": 0.35,
         }
     )
 
