@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "uade-mujoco-g1"
+version = "1.0.0"
+description = "Demostración educativa de sentadilla y saludo del Unitree G1 en MuJoCo"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "mujoco>=3.2,<4",
+    "numpy>=1.26,<3",
+]
+
+[project.scripts]
+uade-mujoco = "uade_mujoco.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
